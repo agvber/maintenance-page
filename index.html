@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>시스템 점검 안내</title>
+<style>
+  :root {
+    --bg: #F4F6F8;
+    --card: #FFFFFF;
+    --text: #1A1D21;
+    --sub: #5B6470;
+    --accent: #2F6FEB;
+    --accent-bg: #E8F0FE;
+    --line: #E3E7EC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4vmin;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+  }
+  .card {
+    width: 100%;
+    max-width: 960px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 3vmin;
+    padding: 7vmin 6vmin;
+    text-align: center;
+  }
+  .icon {
+    width: 16vmin; height: 16vmin;
+    margin: 0 auto 4vmin;
+    border-radius: 50%;
+    background: var(--accent-bg);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .icon svg { width: 9vmin; height: 9vmin; animation: spin 6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  h1 { font-size: clamp(28px, 6vmin, 64px); font-weight: 700; letter-spacing: -0.02em; }
+  .desc {
+    margin-top: 2.5vmin;
+    font-size: clamp(16px, 3vmin, 30px);
+    color: var(--sub);
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+  .footer {
+    margin-top: 5vmin;
+    padding-top: 3vmin;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2vmin;
+    flex-wrap: wrap;
+    font-size: clamp(13px, 2.2vmin, 22px);
+    color: var(--sub);
+  }
+  .clock { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--text); }
+  .en { margin-top: 1.5vmin; font-size: clamp(13px, 2.2vmin, 22px); color: var(--sub); }
+</style>
+</head>
+<body>
+  <main class="card" role="main">
+    <div class="icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2F6FEB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.3 4.3c.4-1.8 3-1.8 3.4 0a1.7 1.7 0 0 0 2.6 1.1c1.5-.9 3.3.8 2.4 2.4a1.7 1.7 0 0 0 1 2.5c1.9.5 1.9 3.1 0 3.5a1.7 1.7 0 0 0-1 2.6c.9 1.5-.9 3.3-2.4 2.4a1.7 1.7 0 0 0-2.6 1c-.4 1.9-3 1.9-3.4 0a1.7 1.7 0 0 0-2.6-1c-1.5.9-3.3-.9-2.4-2.4a1.7 1.7 0 0 0-1-2.6c-1.9-.4-1.9-3 0-3.5a1.7 1.7 0 0 0 1-2.5c-.9-1.6.9-3.3 2.4-2.4a1.7 1.7 0 0 0 2.6-1.1z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </div>
+
+    <h1 id="title"></h1>
+    <p class="desc" id="desc"></p>
+    <p class="en" id="en"></p>
+
+
+    <div class="footer">
+      <span id="contact"></span>
+      <span class="clock" id="clock"></span>
+    </div>
+  </main>
+
+<script>
+  // ===== 여기만 수정하세요 =====
+  var CONFIG = {
+    title: "시스템 점검 중입니다",
+    description: "더 나은 서비스를 위해 시스템을 점검하고 있습니다.\n이용에 불편을 드려 죄송합니다.",
+    english: "We are currently under maintenance. Sorry for the inconvenience.",
+    contact: "문의: IT팀 02-123-4567",
+    reloadMinutes: 5                                 // 문구 변경 반영용 자동 새로고침 주기 (0이면 끔)
+  };
+  // ===========================
+
+  document.getElementById("title").textContent = CONFIG.title;
+  document.getElementById("desc").textContent = CONFIG.description;
+  document.getElementById("en").textContent = CONFIG.english;
+  document.getElementById("contact").textContent = CONFIG.contact;
+  if (!CONFIG.english) document.getElementById("en").style.display = "none";
+
+  var days = ["일", "월", "화", "수", "목", "금", "토"];
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function tick() {
+    var d = new Date();
+    document.getElementById("clock").textContent =
+      (d.getMonth() + 1) + "/" + d.getDate() + " (" + days[d.getDay()] + ") " +
+      pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // 키오스크에서 길게 누르기 메뉴, 확대 방지
+  document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+  document.addEventListener("gesturestart", function (e) { e.preventDefault(); });
+
+  // 오프라인이면 새로고침하지 않고 현재 화면 유지
+  if (CONFIG.reloadMinutes > 0) {
+    setInterval(function () {
+      if (navigator.onLine) location.reload();
+    }, CONFIG.reloadMinutes * 60 * 1000);
+  }
+</script>
+</body>
+</html>
