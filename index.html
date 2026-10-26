@@ -60,7 +60,7 @@
     padding-top: 3vmin;
     border-top: 1px solid var(--line);
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 2vmin;
     flex-wrap: wrap;
@@ -86,7 +86,6 @@
 
 
     <div class="footer">
-      <span id="contact"></span>
       <span class="clock" id="clock"></span>
     </div>
   </main>
@@ -97,7 +96,6 @@
     title: "시스템 점검 중입니다",
     description: "더 나은 서비스를 위해 시스템을 점검하고 있습니다.\n이용에 불편을 드려 죄송합니다.",
     english: "We are currently under maintenance. Sorry for the inconvenience.",
-    contact: "문의: IT팀 02-123-4567",
     reloadMinutes: 5                                 // 문구 변경 반영용 자동 새로고침 주기 (0이면 끔)
   };
   // ===========================
@@ -105,7 +103,6 @@
   document.getElementById("title").textContent = CONFIG.title;
   document.getElementById("desc").textContent = CONFIG.description;
   document.getElementById("en").textContent = CONFIG.english;
-  document.getElementById("contact").textContent = CONFIG.contact;
   if (!CONFIG.english) document.getElementById("en").style.display = "none";
 
   var days = ["일", "월", "화", "수", "목", "금", "토"];
