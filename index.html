@@ -123,6 +123,15 @@
   document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
   document.addEventListener("gesturestart", function (e) { e.preventDefault(); });
 
+  // 화면 꺼짐·어두워짐 방지 (Chrome 84+, HTTPS 필요. 미지원 환경에서는 조용히 무시)
+  var wakeLock = null;
+  function keepAwake() {
+    if (!("wakeLock" in navigator) || document.visibilityState !== "visible") return;
+    navigator.wakeLock.request("screen").then(function (l) { wakeLock = l; }).catch(function () {});
+  }
+  keepAwake();
+  document.addEventListener("visibilitychange", keepAwake);
+
   // 오프라인이면 새로고침하지 않고 현재 화면 유지
   if (CONFIG.reloadMinutes > 0) {
     setInterval(function () {
